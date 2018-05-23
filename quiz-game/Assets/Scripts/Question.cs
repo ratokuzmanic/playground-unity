@@ -28,8 +28,9 @@ namespace Assets.Scripts
             if 
             (
                 string.IsNullOrEmpty(Text)
-                || Choices.Length != 4
-                || Choices.Count(choice => choice.IsTrue) == 1
+                || Choices.Length != Constants.NumberOfChoices
+                || Choices.Any(choice => choice.IsTrue)
+                || Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
                 || Choices.Any(choice => !choice.IsValid())
             )
             {
