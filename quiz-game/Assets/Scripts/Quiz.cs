@@ -15,11 +15,15 @@ namespace Assets.Scripts
             Questions = questions.ToList();
         }
 
-        public Question GetNextQuestion()
+        public IMaybe<Question> GetNextQuestion()
         {
+            if (!Questions.Any())
+            {
+                return None<Question>.Exists();
+            }
             var nextQuestion = Questions[Random.Range(0, Questions.Count)];
             Questions.Remove(nextQuestion);
-            return nextQuestion;
+            return Some<Question>.Exists(nextQuestion);
         }
         
         public bool SubmitAnswer(Question question, string answer)

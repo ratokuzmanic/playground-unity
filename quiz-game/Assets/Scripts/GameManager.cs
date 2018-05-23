@@ -28,13 +28,20 @@ namespace Assets.Scripts
 
         public void SetNewQuestion()
         {
-            _currentQuestion = _quiz.GetNextQuestion();
+            var maybeQuestion = _quiz.GetNextQuestion();
 
-            _controls.Question.text = _currentQuestion.Text;
-            for (var i = 0; i < _currentQuestion.Choices.Length; i++)
-            {
-                _controls.ChoiceStatements[i].text = _currentQuestion.Choices[i].Statement;
-            }
+            maybeQuestion.Case(
+                some: question =>
+                {
+                    _currentQuestion = question;
+                    _controls.Question.text = _currentQuestion.Text;
+                    for (var i = 0; i < _currentQuestion.Choices.Length; i++)
+                    {
+                        _controls.ChoiceStatements[i].text = _currentQuestion.Choices[i].Statement;
+                    }
+                },
+                none: () => SetMessage(false, "No more questions")
+            );
         }
 
         public void SubmitAnswer(Text answer)
@@ -46,13 +53,17 @@ namespace Assets.Scripts
             StartCoroutine(DelayAction(SetNewQuestion));
         }
 
-        private void SetDisappearingMessage(bool isPositive, string message)
+        public void SetMessage(bool isPositive, string message)
         {
             _controls.Choices.SetActive(false);
 
             _controls.Message.color = isPositive ? new Color(0, 1, 0) : new Color(1, 0, 0);
             _controls.Message.text = message;
+        }
 
+        private void SetDisappearingMessage(bool isPositive, string message)
+        {
+            SetMessage(isPositive, message);
             StartCoroutine(DelayAction(RemoveMessage));
         }
 
