@@ -50,14 +50,24 @@ namespace Assets.Scripts
             return questions.Concat(new[]
             {
                 new Question("What is the capital city of Croatia?", new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2),
-                new Question("How old is Jon Bon Jovi?", new [] { "52", "61", "54", "56" }, 4),
-                new Question("How many albums did twenty one pilots publish?", new [] { "1", "3", "4", "5" }, 3)
+                //new Question("How old is Jon Bon Jovi?", new [] { "52", "61", "54", "56" }, 4),
+                //new Question("How many albums did twenty one pilots publish?", new [] { "1", "3", "4", "5" }, 3)
             }).ToArray();
         }
 
         public static Question[] GetValid(this Question[] questions)
         {
             return questions.Where(question => question.IsValid()).ToArray();
+        }
+
+        public static Question[] RandomizeChoicesOrder(this Question[] questions)
+        {
+            var random = new System.Random();
+            foreach (var question in questions)
+            {
+                question.Choices = question.Choices.OrderBy(_ => random.Next()).ToArray();
+            }
+            return questions;
         }
     }
 }

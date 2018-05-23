@@ -15,9 +15,6 @@ namespace Assets.Scripts
         void Start ()
         {
             _controls = GetComponent<ControlsHook>();
-
-            Questions = Questions.ConcatSeed().GetValid();
-
             _quiz = new Quiz(Questions);
             SetNewQuestion();
         }

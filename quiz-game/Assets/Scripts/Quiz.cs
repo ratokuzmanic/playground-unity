@@ -12,7 +12,11 @@ namespace Assets.Scripts
         public Quiz(Question[] questions)
         {
             Score = 0;
-            Questions = questions.ToList();
+            Questions = questions
+                .ConcatSeed()
+                .GetValid()
+                .RandomizeChoicesOrder()
+                .ToList();
         }
 
         public IMaybe<Question> GetNextQuestion()
