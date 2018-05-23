@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,19 +16,19 @@ namespace Assets.Scripts
         private TimeSpan _playingTime;
         private bool _timerIsActive;
 
-        void Start ()
+        private void Start()
         {
             _controls = GetComponent<ControlsHook>();
             _quiz = new Quiz(Questions);
             SetNewQuestion();
         }
 
-        void Update ()
+        private void Update()
         {
             StartCoroutine(IncreaseTimer());
         }
 
-        public void SetNewQuestion()
+        private void SetNewQuestion()
         {
 
             var maybeQuestion = _quiz.GetNextQuestion();
@@ -40,7 +41,7 @@ namespace Assets.Scripts
                     _controls.Question.text = _currentQuestion.Text;
                     for (var i = 0; i < _currentQuestion.Choices.Length; i++)
                     {
-                        _controls.ChoiceStatements[i].text = _currentQuestion.Choices[i].Statement;
+                        _controls.ChoiceButtons[i].Statement.text = _currentQuestion.Choices[i].Statement;
                     }
                 },
                 none: () => SetMessage(false, "No more questions")
@@ -52,13 +53,36 @@ namespace Assets.Scripts
             _timerIsActive = false;
 
             var isCorrect = _quiz.SubmitAnswer(_currentQuestion, answer.text);
-            _controls.Score.text = "Bodovi: " + _quiz.Score;
+            _controls.Score.text = "Score: " + _quiz.Score;
 
+            ResetButtons();
             SetDisappearingMessage(isCorrect, isCorrect ? "Correct!" : "Sorry :(");
             StartCoroutine(DelayAction(SetNewQuestion));
         }
 
-        public void SetMessage(bool isPositive, string message)
+        public void PlayJoker()
+        {
+            _controls.Joker.SetActive(false);
+
+            var newChoices = _currentQuestion.HalfTheChoices();
+            foreach (var choiceButton in _controls.ChoiceButtons)
+            {
+                if (newChoices.All(choice => choice.Statement != choiceButton.Statement.text))
+                {
+                    choiceButton.Button.SetActive(false);
+                }
+            }
+        }
+
+        private void ResetButtons()
+        {
+            foreach (var choiceButton in _controls.ChoiceButtons)
+            {
+                choiceButton.Button.SetActive(true);
+            }
+        }
+
+        private void SetMessage(bool isPositive, string message)
         {
             _controls.Choices.SetActive(false);
 
@@ -90,7 +114,7 @@ namespace Assets.Scripts
             if (_timerIsActive)
             {
                 _playingTime = _playingTime.Add(new TimeSpan(0, 0, 1));
-                _controls.Timer.text = "Vrijeme: " + _playingTime;
+                _controls.Timer.text = "Time: " + _playingTime;
             }
         }
     }

@@ -41,6 +41,19 @@ namespace Assets.Scripts
             }
             return false;
         }
+
+        public Choice[] HalfTheChoices()
+        {
+            var random = new System.Random();
+            var correctChoice = Choices.Where(choice => choice.IsTrue);
+
+            return Choices
+                .Where(choice => !choice.IsTrue)
+                .OrderBy(_ => random.Next())
+                .Take(1)
+                .Concat(correctChoice)
+                .ToArray();
+        }
     }
 
     public static class QuestionExtensions
