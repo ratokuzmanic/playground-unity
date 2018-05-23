@@ -11,7 +11,12 @@ namespace Assets.Scripts
         [SerializeField]
         public Choice[] Choices;
 
-        public Question(string text, string[] choiceStatements, int correctChoiceLocation)
+        public Question
+        (
+            string   text, 
+            string[] choiceStatements, 
+            int      correctChoiceLocation
+        )
         {
             Text = text;
             Choices = choiceStatements.Select(statement => new Choice(statement)).ToArray();
@@ -20,15 +25,13 @@ namespace Assets.Scripts
 
         public bool IsValid()
         {
-            if (string.IsNullOrEmpty(Text))
-            {
-                return false;
-            }
-            if (Choices.Length != 4 || !Choices.Any(choice => choice.IsTrue))
-            {
-                return false;
-            }
-            if (!Choices.All(choice => choice.IsValid()))
+            if 
+            (
+                string.IsNullOrEmpty(Text)               ||
+                Choices.Length != 4                      ||
+                !Choices.Any(choice => choice.IsTrue)    ||
+                !Choices.All(choice => choice.IsValid())
+            )
             {
                 return false;
             }

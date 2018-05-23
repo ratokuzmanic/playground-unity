@@ -6,12 +6,15 @@ namespace Assets.Scripts
     public class Choice
     {
         public string Statement;
-        public bool IsTrue;
+        public bool   IsTrue;
 
-        public Choice(string statement)
+        public Choice
+        (
+            string statement
+        )
         {
             Statement = statement;
-            IsTrue = false;
+            IsTrue    = false;
         }
 
         public bool IsValid()
