@@ -35,6 +35,7 @@ namespace Assets.Scripts
                 && Choices.Any(choice => choice.IsTrue)
                 && Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
                 && Choices.All(choice => choice.IsValid())
+                && Choices.GroupBy(choice => choice.Statement).Count() == Choices.Length
             )
             {
                 return true;
@@ -62,9 +63,12 @@ namespace Assets.Scripts
         {
             return questions.Concat(new[]
             {
-                new Question("What is the capital city of Croatia?", new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2),
-                new Question("How old is Jon Bon Jovi?", new [] { "52", "61", "54", "56" }, 4),
-                new Question("How many albums did twenty one pilots publish?", new [] { "1", "3", "4", "5" }, 3)
+                new Question("What is the capital city of Croatia?",           new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2),
+                new Question("How old is Jon Bon Jovi?",                       new [] { "52", "61", "54", "56"                }, 4),
+                new Question("How many albums did twenty one pilots publish?", new [] { "1", "3", "4", "5"                    }, 3),
+                new Question("How good is Life is Strange?",                   new [] { "Good", "Hella good", "Meh", "Bad"    }, 2),
+                new Question("This is an example of a corrupt question",       new [] { "Ok", "What?"                         }, 1),
+                new Question("This is also a corrupt question",                new [] { "1", "3", "1", "5"                    }, 1),
             }).ToArray();
         }
 
