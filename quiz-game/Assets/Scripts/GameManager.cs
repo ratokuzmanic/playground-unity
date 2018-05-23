@@ -9,8 +9,11 @@ namespace Assets.Scripts
         public Question[] Questions;
 
         private ControlsHook _controls;
+
         private Quiz _quiz;
         private Question _currentQuestion;
+        private TimeSpan _playingTime;
+        private bool _timerIsActive;
 
         void Start ()
         {
@@ -19,17 +22,20 @@ namespace Assets.Scripts
             SetNewQuestion();
         }
 
-        void Update () {
-	
+        void Update ()
+        {
+            StartCoroutine(IncreaseTimer());
         }
 
         public void SetNewQuestion()
         {
+
             var maybeQuestion = _quiz.GetNextQuestion();
 
             maybeQuestion.Case(
                 some: question =>
                 {
+                    _timerIsActive = true;
                     _currentQuestion = question;
                     _controls.Question.text = _currentQuestion.Text;
                     for (var i = 0; i < _currentQuestion.Choices.Length; i++)
@@ -43,6 +49,8 @@ namespace Assets.Scripts
 
         public void SubmitAnswer(Text answer)
         {
+            _timerIsActive = false;
+
             var isCorrect = _quiz.SubmitAnswer(_currentQuestion, answer.text);
             _controls.Score.text = "Bodovi: " + _quiz.Score;
 
@@ -74,6 +82,16 @@ namespace Assets.Scripts
         {
             yield return new WaitForSeconds(Constants.WaitTimeForDelayedAction);
             action();
+        }
+
+        private IEnumerator IncreaseTimer()
+        {
+            yield return new WaitForSeconds(1);
+            if (_timerIsActive)
+            {
+                _playingTime = _playingTime.Add(new TimeSpan(0, 0, 1));
+                _controls.Timer.text = "Vrijeme: " + _playingTime;
+            }
         }
     }
 }

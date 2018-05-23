@@ -14,6 +14,8 @@ namespace Assets.Scripts
 
         public Text Score;
 
+        public Text Timer;
+
         public Text Message;
     }
 }
