@@ -8,8 +8,8 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour {
         public Question[] Questions;
-
-        private ControlsHook _controls;
+        
+        private UiManager _uiManager;
 
         private Quiz _quiz;
         private Question _currentQuestion;
@@ -18,7 +18,7 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            _controls = GetComponent<ControlsHook>();
+            _uiManager = GetComponent<UiManager>();
             _quiz = new Quiz(Questions);
             SetNewQuestion();
         }
@@ -38,13 +38,9 @@ namespace Assets.Scripts
                 {
                     _isTimerIsActive = true;
                     _currentQuestion = question;
-                    _controls.Question.text = _currentQuestion.Text;
-                    for (var i = 0; i < _currentQuestion.Choices.Length; i++)
-                    {
-                        _controls.ChoiceButtons[i].Statement.text = _currentQuestion.Choices[i].Statement;
-                    }
+                    _uiManager.DrawQuestion(_currentQuestion);
                 },
-                none: () => SetMessage(false, "No more questions")
+                none: () => _uiManager.DrawMessage("No more questions")
             );
         }
 
@@ -53,53 +49,19 @@ namespace Assets.Scripts
             _isTimerIsActive = false;
 
             var isCorrect = _quiz.SubmitAnswer(_currentQuestion, answer.text);
-            _controls.Score.text = "Score: " + _quiz.Score;
+            _uiManager.DrawScore(_quiz.Score);
 
-            ResetButtons();
-            SetDisappearingMessage(isCorrect, isCorrect ? "Correct!" : "Sorry :(");
+            _uiManager.ResetQuestionButtons();
+            _uiManager.DrawDisappearingMessage(isCorrect ? "Correct!" : "Sorry :(", isCorrect);
+
             StartCoroutine(DelayAction(SetNewQuestion));
         }
 
         public void PlayJoker()
         {
-            _controls.Joker.SetActive(false);
-
+            _uiManager.PlayJoker();
             var newChoices = _currentQuestion.HalfTheChoices();
-            foreach (var choiceButton in _controls.ChoiceButtons)
-            {
-                if (newChoices.All(choice => choice.Statement != choiceButton.Statement.text))
-                {
-                    choiceButton.Button.SetActive(false);
-                }
-            }
-        }
-
-        private void ResetButtons()
-        {
-            foreach (var choiceButton in _controls.ChoiceButtons)
-            {
-                choiceButton.Button.SetActive(true);
-            }
-        }
-
-        private void SetMessage(bool isPositive, string message)
-        {
-            _controls.Choices.SetActive(false);
-
-            _controls.Message.color = isPositive ? new Color(0, 1, 0) : new Color(1, 0, 0);
-            _controls.Message.text = message;
-        }
-
-        private void SetDisappearingMessage(bool isPositive, string message)
-        {
-            SetMessage(isPositive, message);
-            StartCoroutine(DelayAction(RemoveMessage));
-        }
-
-        private void RemoveMessage()
-        {
-            _controls.Message.text = "";
-            _controls.Choices.SetActive(true);
+            _uiManager.ShowOnlyButtonsOfChoices(newChoices);
         }
 
         private IEnumerator DelayAction(Action action)
@@ -114,7 +76,7 @@ namespace Assets.Scripts
             if (_isTimerIsActive)
             {
                 _playingTime = _playingTime.Add(new TimeSpan(0, 0, 1));
-                _controls.Timer.text = "Time: " + _playingTime;
+                _uiManager.DrawTime(_playingTime);
             }
         }
     }
