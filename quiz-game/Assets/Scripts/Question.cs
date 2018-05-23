@@ -27,10 +27,10 @@ namespace Assets.Scripts
         {
             if 
             (
-                string.IsNullOrEmpty(Text)                  ||
-                Choices.Length != 4                         ||
-                Choices.Count(choice => choice.IsTrue) == 1 ||
-                !Choices.All(choice => choice.IsValid())
+                string.IsNullOrEmpty(Text)
+                || Choices.Length != 4
+                || Choices.Count(choice => choice.IsTrue) == 1
+                || Choices.Any(choice => !choice.IsValid())
             )
             {
                 return false;
