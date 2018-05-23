@@ -21,5 +21,14 @@ namespace Assets.Scripts
             Questions.Remove(nextQuestion);
             return nextQuestion;
         }
+        
+        public bool CheckIfCorrect(Question question, Choice choice)
+        {
+            if (choice.IsTrue)
+            {
+                Score++;
+            }
+            return choice.IsTrue;
+        }
     }
 }
