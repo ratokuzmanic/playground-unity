@@ -25,18 +25,21 @@ namespace Assets.Scripts
 
         public bool IsValid()
         {
-            if 
-            (
-                string.IsNullOrEmpty(Text)
-                || Choices.Length != Constants.NumberOfChoices
-                || Choices.Any(choice => choice.IsTrue)
-                || Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
-                || Choices.Any(choice => !choice.IsValid())
-            )
+            if (string.IsNullOrEmpty(Text))
             {
                 return false;
             }
-            return true;
+            if
+            (
+                Choices.Length == Constants.NumberOfChoices
+                && Choices.Any(choice => choice.IsTrue)
+                && Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
+                && Choices.All(choice => choice.IsValid())
+            )
+            {
+                return true;
+            }
+            return false;
         }
     }
 
@@ -46,8 +49,9 @@ namespace Assets.Scripts
         {
             return questions.Concat(new[]
             {
-                new Question("What is the capital city of Croatia", new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2),
-                new Question("What is the capital city of Croatia", new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2)
+                new Question("What is the capital city of Croatia?", new [] { "Split", "Zagreb", "Rijeka", "Osijek" }, 2),
+                new Question("How old is Jon Bon Jovi?", new [] { "52", "61", "54", "56" }, 4),
+                new Question("How many albums did twenty one pilots publish?", new [] { "1", "3", "4", "5" }, 3)
             }).ToArray();
         }
 
