@@ -22,7 +22,7 @@ namespace Assets.Scripts
             return nextQuestion;
         }
         
-        public bool CheckIfCorrect(Question question, string answer)
+        public bool SubmitAnswer(Question question, string answer)
         {
             var selectedChoice = question
                 .Choices

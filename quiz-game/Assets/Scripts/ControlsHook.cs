@@ -8,8 +8,12 @@ namespace Assets.Scripts
         public Text Question;
 
         [SerializeField]
-        public Text[] Choices;
+        public Text[] ChoiceStatements;
+
+        public GameObject Choices;
 
         public Text Score;
+
+        public Text Message;
     }
 }
