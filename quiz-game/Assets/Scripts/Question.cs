@@ -29,18 +29,11 @@ namespace Assets.Scripts
             {
                 return false;
             }
-            if
-            (
-                Choices.Length == Constants.NumberOfChoices
-                && Choices.Any(choice => choice.IsTrue)
-                && Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
-                && Choices.All(choice => choice.IsValid())
-                && Choices.GroupBy(choice => choice.Statement).Count() == Choices.Length
-            )
-            {
-                return true;
-            }
-            return false;
+            return Choices.Length == Constants.NumberOfChoices
+                   && Choices.Any(choice => choice.IsTrue)
+                   && Choices.Count(choice => choice.IsTrue) <= Constants.MaximumCorrectChoicesInSingleQuestion
+                   && Choices.All(choice => choice.IsValid())
+                   && Choices.GroupBy(choice => choice.Statement).Count() == Choices.Length;
         }
 
         public Choice[] HalfTheChoices()

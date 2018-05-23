@@ -19,11 +19,7 @@ namespace Assets.Scripts
 
         public bool IsValid()
         {
-            if (string.IsNullOrEmpty(Statement))
-            {
-                return false;
-            }
-            return true;
+            return !string.IsNullOrEmpty(Statement);
         }
     }
 }

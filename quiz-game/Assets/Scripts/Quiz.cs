@@ -7,12 +7,13 @@ namespace Assets.Scripts
     public class Quiz
     {
         public int Score;
-        public IList<Question> Questions;
+
+        private readonly IList<Question> _questions;
 
         public Quiz(Question[] questions)
         {
             Score = 0;
-            Questions = questions
+            _questions = questions
                 .ConcatSeed()
                 .GetValid()
                 .RandomizeChoicesOrder()
@@ -21,12 +22,12 @@ namespace Assets.Scripts
 
         public IMaybe<Question> GetNextQuestion()
         {
-            if (!Questions.Any())
+            if (!_questions.Any())
             {
                 return None<Question>.Exists();
             }
-            var nextQuestion = Questions[Random.Range(0, Questions.Count)];
-            Questions.Remove(nextQuestion);
+            var nextQuestion = _questions[Random.Range(0, _questions.Count)];
+            _questions.Remove(nextQuestion);
             return Some<Question>.Exists(nextQuestion);
         }
         
