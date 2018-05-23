@@ -14,7 +14,7 @@ namespace Assets.Scripts
         private Quiz _quiz;
         private Question _currentQuestion;
         private TimeSpan _playingTime;
-        private bool _timerIsActive;
+        private bool _isTimerIsActive;
 
         private void Start()
         {
@@ -36,7 +36,7 @@ namespace Assets.Scripts
             maybeQuestion.Case(
                 some: question =>
                 {
-                    _timerIsActive = true;
+                    _isTimerIsActive = true;
                     _currentQuestion = question;
                     _controls.Question.text = _currentQuestion.Text;
                     for (var i = 0; i < _currentQuestion.Choices.Length; i++)
@@ -50,7 +50,7 @@ namespace Assets.Scripts
 
         public void SubmitAnswer(Text answer)
         {
-            _timerIsActive = false;
+            _isTimerIsActive = false;
 
             var isCorrect = _quiz.SubmitAnswer(_currentQuestion, answer.text);
             _controls.Score.text = "Score: " + _quiz.Score;
@@ -111,7 +111,7 @@ namespace Assets.Scripts
         private IEnumerator IncreaseTimer()
         {
             yield return new WaitForSeconds(1);
-            if (_timerIsActive)
+            if (_isTimerIsActive)
             {
                 _playingTime = _playingTime.Add(new TimeSpan(0, 0, 1));
                 _controls.Timer.text = "Time: " + _playingTime;
