@@ -29,7 +29,6 @@ namespace Assets.Scripts
 
         private void SetNewQuestion()
         {
-
             var maybeQuestion = _quiz.GetNextQuestion();
 
             maybeQuestion.Case(
