@@ -22,13 +22,17 @@ namespace Assets.Scripts
             return nextQuestion;
         }
         
-        public bool CheckIfCorrect(Question question, Choice choice)
+        public bool CheckIfCorrect(Question question, string answer)
         {
-            if (choice.IsTrue)
+            var selectedChoice = question
+                .Choices
+                .First(choice => choice.Statement == answer);
+
+            if (selectedChoice.IsTrue)
             {
                 Score++;
             }
-            return choice.IsTrue;
+            return selectedChoice.IsTrue;
         }
     }
 }

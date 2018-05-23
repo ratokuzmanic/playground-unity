@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -38,10 +37,7 @@ namespace Assets.Scripts
 
         public void SubmitAnswer(Text answer)
         {
-            var isCorrect = _quiz.CheckIfCorrect(
-                _currentQuestion, 
-                _currentQuestion.Choices.First(choice => choice.Statement == answer.text)
-            );
+            var isCorrect = _quiz.CheckIfCorrect(_currentQuestion, answer.text);
             _controls.Score.text = "Bodovi: " + _quiz.Score;
         }
     }
