@@ -5,7 +5,6 @@ namespace Assets.Scripts
     public interface IMaybe<T>
     {
         bool HasValue { get; }
-        TU   Case<TU> (Func<T, TU> some, Func<TU> none);
         void Case     (Action<T> some, Action none);
     }
 
@@ -41,15 +40,16 @@ namespace Assets.Scripts
             HasValue = false;
         }
 
-        public TU Case<TU>(Func<T, TU> some, Func<TU> none)
-        {
-            return HasValue ? some(_value) : none();
-        }
-
         public void Case(Action<T> some, Action none)
         {
-            if (HasValue) some(_value);
-            else none();
+            if (HasValue)
+            {
+                some(_value);
+            }
+            else
+            {
+                none();
+            }
         }
     }
 }
