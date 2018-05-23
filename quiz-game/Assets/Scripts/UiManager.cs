@@ -9,9 +9,15 @@ namespace Assets.Scripts
     {
         private ControlsHook _controls;
 
+        private Color _positiveColor;
+        private Color _negativeColor;
+
         private void Start()
         {
             _controls = GetComponent<ControlsHook>();
+
+            _positiveColor = new Color(21 / 255f, 150 / 255f, 86 / 255f);
+            _negativeColor = new Color(135 / 255f, 35 / 255f, 13 / 255f);
         }
 
         public void DrawScore(int score)
@@ -60,7 +66,7 @@ namespace Assets.Scripts
         public void DrawMessage(string message, bool isPositive = false)
         {
             _controls.Choices.SetActive(false);
-            _controls.Message.color = isPositive ? new Color(0, 1, 0) : new Color(1, 0, 0);
+            _controls.Message.color = isPositive ? _positiveColor : _negativeColor;
             _controls.Message.text = message;
         }
 
