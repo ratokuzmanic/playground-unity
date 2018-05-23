@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
-using System;
-using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-public class GameManager : MonoBehaviour {
-	public Question[] questions;
+namespace Assets.Scripts
+{
+    public class GameManager : MonoBehaviour {
+        public Question[] Questions;
 	
-	void Start ()
-	{
-	    questions = questions.Concat(Question.Seed()).ToArray();
-	}
+        void Start ()
+        {
+            Questions = Questions.ConcatSeed().GetValid();
+        }
 
-	void Update () {
+        void Update () {
 	
-	}
+        }
+    }
 }
