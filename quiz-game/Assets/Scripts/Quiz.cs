@@ -10,7 +10,7 @@ namespace Assets.Scripts
 
         private readonly IList<Question> _questions;
 
-        public Quiz(Question[] questions)
+        private Quiz(Question[] questions)
         {
             Score = 0;
             _questions = questions
@@ -42,6 +42,11 @@ namespace Assets.Scripts
                 Score++;
             }
             return selectedChoice.IsTrue;
+        }
+
+        public static Quiz CreateFrom(Question[] userDefinedQuestions)
+        {
+            return new Quiz(userDefinedQuestions);
         }
     }
 }

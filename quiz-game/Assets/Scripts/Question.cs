@@ -44,7 +44,7 @@ namespace Assets.Scripts
             return Choices
                 .Where(choice => !choice.IsTrue)
                 .OrderBy(_ => random.Next())
-                .Take(1)
+                .Take(Constants.NumberOfChoices/2 - 1)
                 .Concat(correctChoice)
                 .ToArray();
         }

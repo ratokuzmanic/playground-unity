@@ -18,7 +18,7 @@ namespace Assets.Scripts
         private void Start()
         {
             _uiManager = GetComponent<UiManager>();
-            _quiz = new Quiz(Questions);
+            _quiz = Quiz.CreateFrom(Questions);
             SetNewQuestion();
         }
 
